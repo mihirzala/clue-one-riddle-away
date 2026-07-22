@@ -2,6 +2,10 @@
 
 A single-player daily riddle game. Each player receives a new sequence of 10 increasingly difficult riddles at local midnight.
 
+## Live game
+
+[Play Clue: One Riddle Away](https://clue-eosin.vercel.app/)
+
 ## Run locally
 
 Serve this directory with any static web server, then open the local URL in a browser. For example:
