@@ -30,6 +30,8 @@ python3 -m http.server 8000
 
 Progress and high scores are stored locally in the browser.
 
+See [`agent.md`](agent.md) for the adaptive agent's complete tracking lifecycle, unlock rules, privacy boundaries, and integrity limitations.
+
 ## Adaptive challenge and integrity
 
 The adaptive challenge engine measures first-try accuracy, mistakes, hint use, letter reveals, answer time, and remaining lives. Consistently strong play unlocks an expert bonus riddle after the regular ten.

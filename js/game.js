@@ -125,7 +125,7 @@ function startGame() {
     lives = maxLives;
     gameActive = true;
     bonusUnlocked = false;
-    adaptiveAgent.reset();
+    adaptiveAgent.startSession();
     
     document.getElementById('banked-score-display').textContent = "0 pts";
     document.getElementById('pending-score-display').textContent = "0 pts";
@@ -362,6 +362,7 @@ function riskAndContinue() {
 
 function triggerBust(reason) {
     gameActive = false;
+    adaptiveAgent.stopSession();
     playSound('game-over');
 
     const retainedPending = Math.floor(pendingScore * 0.25);
@@ -388,6 +389,7 @@ function triggerBust(reason) {
 
 function handleRunSuccess() {
     gameActive = false;
+    adaptiveAgent.stopSession();
     updateHighScore(bankedScore);
 
     document.getElementById('game-over-icon').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -408,6 +410,7 @@ function handleRunSuccess() {
 
 function handleCompleteMastery() {
     gameActive = false;
+    adaptiveAgent.stopSession();
     updateHighScore(bankedScore);
     localStorage.setItem('clue_daily_completed', dailyKey);
     updateDailyButton();
