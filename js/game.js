@@ -167,6 +167,18 @@ function loadLevel() {
     hintBtn.disabled = false;
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
+    if (currentLevel === 9 && !data.bonus) {
+        activeHintUsed = true;
+        document.getElementById('active-hint-text').textContent = data.hint;
+        document.getElementById('active-hint-box').classList.remove('hidden');
+        document.getElementById('active-hint-row').classList.remove('hidden');
+        hintBtn.disabled = true;
+        hintBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        showMessageNotification(gujarati
+            ? 'અંતિમ કોયડાની મફત clue મળી!'
+            : 'Your free clue for the final riddle is ready!');
+    }
+
     renderLives();
     adaptiveAgent.beginQuestion();
 }

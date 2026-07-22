@@ -21,7 +21,9 @@ python3 -m http.server 8000
 - `js/questions.js` — curated riddle banks
 - `js/daily.js` — 365-day selection and midnight renewal
 - `js/adaptive.js` — performance tracking and expert bonus selection
+- `js/player.js` — first-visit name collection and backend registration
 - `js/game.js` — gameplay, scoring, hints, lives, audio, and screen flow
+- `api/players.js` — validated server-side player registration
 
 ## Daily challenge rules
 
@@ -32,6 +34,7 @@ python3 -m http.server 8000
 - Four lives per attempt
 - Revealing the first letter costs one life
 - Completing all 10 riddles marks that day's challenge complete
+- Riddle 10 automatically includes a free final clue after riddle 9
 - A new challenge becomes available at 12:00 AM in the player's local timezone
 
 Progress and high scores are stored locally in the browser.
@@ -43,3 +46,7 @@ See [`agent.md`](agent.md) for the adaptive agent's complete tracking lifecycle,
 The adaptive challenge engine measures first-try accuracy, mistakes, hint use, letter reveals, answer time, and remaining lives. Consistently strong play unlocks an expert bonus riddle after the regular ten.
 
 Answers are stored as SHA-256 fingerprints rather than readable text, and answer pasting is blocked. These controls discourage casual cheating, but a browser-only game cannot guarantee tamper-proof competitive results. Tournament-grade enforcement would require server-side answer validation and trusted user accounts.
+
+## Player names and privacy
+
+First-time players are asked for a name and shown a storage notice before continuing. The backend validates the name, stores it with a random player ID and signup timestamp in a private Vercel Blob store, and returns the ID to the browser. Player records are not publicly readable.

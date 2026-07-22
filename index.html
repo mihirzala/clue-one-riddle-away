@@ -14,6 +14,18 @@
 </head>
 <body class="h-screen w-screen flex flex-col justify-between overflow-hidden select-none transition-colors duration-300" id="body-wrapper">
 
+    <div id="player-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-[#2c1e11]/70 px-4 backdrop-blur-sm">
+        <div class="w-full max-w-sm rounded-3xl border-2 border-orange-500 bg-white p-6 text-center shadow-2xl">
+            <div class="mb-3 text-4xl" aria-hidden="true">👋</div>
+            <h2 class="font-premium-header text-2xl text-[#2c1e11]">Welcome, player!</h2>
+            <p class="mt-2 text-sm font-bold text-[#5f4026]">What should we call you?</p>
+            <input id="player-name-input" type="text" maxlength="50" autocomplete="name" placeholder="Your name" class="mt-4 w-full rounded-xl border-2 border-orange-200 px-4 py-3 text-center font-clue font-bold outline-none focus:border-orange-500">
+            <p class="mt-2 text-[10px] font-bold text-[#5f4026]">By continuing, your name and signup time will be saved privately so the game can recognize its players.</p>
+            <p id="player-name-error" class="mt-2 min-h-4 text-xs font-bold text-red-700"></p>
+            <button id="save-player-button" type="button" onclick="savePlayerName()" class="orange-button mt-2 w-full rounded-xl py-3 font-premium-header text-sm">CONTINUE</button>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="border-b-2 border-[#2c1e11]/20 bg-white/70 backdrop-blur-md shrink-0 px-6 py-2.5 shadow-sm">
         <div class="max-w-4xl mx-auto flex justify-between items-center">
@@ -262,6 +274,7 @@
     </footer>
 
     <!-- Scripts & Audio -->
+    <script src="js/player.js"></script>
     <script src="js/questions.js"></script>
     <script src="js/daily.js"></script>
     <script src="js/adaptive.js"></script>
