@@ -16,6 +16,7 @@ python3 -m http.server 8000
 - `css/styles.css` — visual design and animations
 - `js/questions.js` — curated riddle banks
 - `js/daily.js` — 365-day selection and midnight renewal
+- `js/adaptive.js` — performance tracking and expert bonus selection
 - `js/game.js` — gameplay, scoring, hints, lives, audio, and screen flow
 
 ## Daily challenge rules
@@ -28,3 +29,9 @@ python3 -m http.server 8000
 - A new challenge becomes available at 12:00 AM in the player's local timezone
 
 Progress and high scores are stored locally in the browser.
+
+## Adaptive challenge and integrity
+
+The adaptive challenge engine measures first-try accuracy, mistakes, hint use, letter reveals, answer time, and remaining lives. Consistently strong play unlocks an expert bonus riddle after the regular ten.
+
+Answers are stored as SHA-256 fingerprints rather than readable text, and answer pasting is blocked. These controls discourage casual cheating, but a browser-only game cannot guarantee tamper-proof competitive results. Tournament-grade enforcement would require server-side answer validation and trusted user accounts.

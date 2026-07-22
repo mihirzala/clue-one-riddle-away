@@ -87,6 +87,8 @@ const maxLives = 4;
 let activeHintUsed = false;
 let activeFirstLetterUsed = false;
 let gameActive = false;
+let bonusUnlocked = false;
+let isSubmitting = false;
 
 function updateDailyButton() {
     const dailyCompleted = localStorage.getItem('clue_daily_completed') === dailyKey;
@@ -122,6 +124,8 @@ function startGame() {
     bankedScore = 0;
     lives = maxLives;
     gameActive = true;
+    bonusUnlocked = false;
+    adaptiveAgent.reset();
     
     document.getElementById('banked-score-display').textContent = "0 pts";
     document.getElementById('pending-score-display').textContent = "0 pts";
@@ -133,7 +137,7 @@ function startGame() {
 function loadLevel() {
     const data = QUESTIONS[currentLevel];
     
-    document.getElementById('level-tag').textContent = `RIDDLE ${data.level}/10`;
+    document.getElementById('level-tag').textContent = data.bonus ? 'EXPERT BONUS' : `RIDDLE ${data.level}/10`;
     const difficultyNames = {
         SIMPLE: 'EASY', MODERATE: 'MEDIUM', LOGICAL: 'MEDIUM', CLASSICAL: 'MEDIUM',
         HISTORIC: 'TRICKY', DIFFICULT: 'HARD', ADVANCED: 'HARD', EXPERT: 'EXPERT'
@@ -154,6 +158,7 @@ function loadLevel() {
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
     renderLives();
+    adaptiveAgent.beginQuestion();
 }
 
 function renderLives() {
@@ -174,8 +179,14 @@ function renderLives() {
     }
 }
 
-function submitAnswer() {
-    if (!gameActive) return;
+async function hashAnswer(value) {
+    const bytes = new TextEncoder().encode(value);
+    const digest = await crypto.subtle.digest('SHA-256', bytes);
+    return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function submitAnswer() {
+    if (!gameActive || isSubmitting) return;
 
     const inputEl = document.getElementById('answer-input');
     const rawValue = inputEl.value;
@@ -186,8 +197,15 @@ function submitAnswer() {
         return;
     }
 
+    isSubmitting = true;
     const activeLevelData = QUESTIONS[currentLevel];
-    const isCorrect = activeLevelData.answers.includes(cleanedInput);
+    const submittedHash = await hashAnswer(cleanedInput);
+    const isCorrect = activeLevelData.answerHashes.includes(submittedHash);
+    if (Date.now() - adaptiveAgent.questionStartedAt < 800 && cleanedInput.length > 1) {
+        adaptiveAgent.flagIntegrityIssue();
+    }
+    adaptiveAgent.recordAnswer(isCorrect);
+    isSubmitting = false;
 
     if (isCorrect) {
         handleCorrectAnswer();
@@ -264,6 +282,7 @@ function buyHint() {
 
     pendingScore -= cost;
     activeHintUsed = true;
+    adaptiveAgent.recordHint();
     playSound('buy');
 
     const levelData = QUESTIONS[currentLevel];
@@ -293,11 +312,11 @@ function buyFirstLetter() {
 
     lives--;
     activeFirstLetterUsed = true;
+    adaptiveAgent.recordLetterReveal();
     playSound('buy');
     renderLives();
 
-    const primaryAnswer = QUESTIONS[currentLevel].answers[0];
-    const firstLetter = primaryAnswer.charAt(0).toUpperCase();
+    const firstLetter = QUESTIONS[currentLevel].firstLetter;
 
     document.getElementById('active-letter-text').textContent = firstLetter;
     document.getElementById('active-hint-box').classList.remove('hidden');
@@ -324,6 +343,16 @@ function riskAndContinue() {
         document.getElementById('pending-score-display').textContent = `${pendingScore} pts`;
         document.getElementById('banked-score-display').textContent = `${bankedScore} pts`;
     } else {
+        if (!bonusUnlocked && adaptiveAgent.shouldUnlockExpertChallenge(lives)) {
+            bonusUnlocked = true;
+            QUESTIONS.push(TOUGHEST_QUESTION);
+            currentLevel++;
+            playSound('level-win');
+            showScreen('gameplay-screen');
+            loadLevel();
+            showMessageNotification("Expert bonus unlocked — your toughest riddle awaits!");
+            return;
+        }
         bankedScore += pendingScore;
         pendingScore = 0;
         playSound('escape');
@@ -400,10 +429,10 @@ function handleCompleteMastery() {
 }
 
 function getRankTitle(score, layersCleared) {
-    if (layersCleared >= 10) return "RIDDLE CHAMPIONS";
-    if (layersCleared >= 8) return "AMAZING TEAM";
-    if (layersCleared >= 6) return "SUPER SOLVERS";
-    if (layersCleared >= 4) return "GREAT TEAMWORK";
+    if (layersCleared >= 10) return "RIDDLE MASTER";
+    if (layersCleared >= 8) return "BRILLIANT SOLVER";
+    if (layersCleared >= 6) return "SUPER SOLVER";
+    if (layersCleared >= 4) return "SHARP THINKER";
     if (layersCleared >= 2) return "NICE WORK";
     return "GOOD START";
 }
@@ -442,4 +471,10 @@ document.getElementById('answer-input').addEventListener('keydown', function(eve
     if (event.key === 'Enter') {
         submitAnswer();
     }
+});
+
+document.getElementById('answer-input').addEventListener('paste', function(event) {
+    event.preventDefault();
+    adaptiveAgent.flagIntegrityIssue();
+    showMessageNotification("Please type your own answer.");
 });

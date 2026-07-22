@@ -125,7 +125,7 @@
                     <div class="space-y-2 shrink-0">
                         <div class="flex flex-col sm:flex-row gap-2">
                             <div class="relative flex-grow">
-                                <input type="text" id="answer-input" autocomplete="off" placeholder="Type your answer..." class="w-full bg-[#faf7f2] border-2 border-[#2c1e11]/25 focus:border-[#2c1e11] text-[#2c1e11] font-clue rounded-lg px-3 py-2.5 outline-none transition-all placeholder:text-[#2c1e11]/40 text-xs font-bold">
+                                <input type="text" id="answer-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer..." class="w-full bg-[#faf7f2] border-2 border-[#2c1e11]/25 focus:border-[#2c1e11] text-[#2c1e11] font-clue rounded-lg px-3 py-2.5 outline-none transition-all placeholder:text-[#2c1e11]/40 text-xs font-bold">
                                 <button onclick="buyHint()" id="hint-btn" class="absolute right-2 top-1.5 orange-button text-[9px] font-bold font-premium-header px-2 py-1.5 rounded flex items-center space-x-1" title="Costs 50 pts">
                                     <span class="hidden sm:inline">Get Hint</span>
                                     <span class="bg-black/20 px-1 rounded text-white font-normal">50 pts</span>
@@ -260,6 +260,7 @@
     <!-- Scripts & Audio -->
     <script src="js/questions.js"></script>
     <script src="js/daily.js"></script>
+    <script src="js/adaptive.js"></script>
     <script src="js/game.js"></script>
 </body>
 </html>
