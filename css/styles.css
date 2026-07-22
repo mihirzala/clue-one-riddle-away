@@ -1,0 +1,75 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: #faf7f2;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(243, 237, 226, 0.6) 0, transparent 50%), 
+        radial-gradient(at 100% 100%, rgba(197, 160, 89, 0.1) 0, transparent 50%);
+    color: #2c1e11;
+    font-weight: 700;
+}
+.font-premium-header {
+    font-family: 'Lilita One', sans-serif;
+    font-weight: 400;
+}
+.font-clue {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+}
+/* Clean orange game title */
+.clue-title-premium {
+    color: #f97316;
+    font-family: 'Lilita One', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+}
+/* Robust dark brown borders */
+.gold-border-lux {
+    border: 3px solid #2c1e11;
+    box-shadow: 0 10px 25px rgba(44, 30, 17, 0.15);
+}
+
+/* Premium Orange Buttons with Solid Black Border */
+.orange-button {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border: 2px solid #000000;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 800;
+}
+.orange-button * {
+    color: #ffffff !important;
+}
+.orange-button:hover {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+    box-shadow: 0 6px 16px rgba(234, 88, 12, 0.45);
+    transform: translateY(-1px);
+}
+.orange-button:active {
+    transform: translateY(1px);
+}
+
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-8px); }
+    40%, 80% { transform: translateX(8px); }
+}
+.ink-stain {
+    animation: inkSpill 0.5s ease-out;
+}
+@keyframes inkSpill {
+    0% { background-color: rgba(44, 30, 17, 0.25); }
+    100% { background-color: transparent; }
+}
+.parchment-glow {
+    box-shadow: 0 8px 30px rgba(44, 30, 17, 0.08);
+}
+input:focus {
+    box-shadow: 0 0 0 3px rgba(44, 30, 17, 0.25);
+}
