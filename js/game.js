@@ -94,7 +94,7 @@ function updateDailyButton() {
     const dailyCompleted = localStorage.getItem('clue_daily_completed') === dailyKey;
     const startButton = document.getElementById('start-game-button');
     if (dailyCompleted) {
-        startButton.textContent = "TODAY’S CHALLENGE COMPLETE";
+        startButton.textContent = activeLanguage === 'gu' ? "આજનો પડકાર પૂર્ણ થયો" : "TODAY’S CHALLENGE COMPLETE";
         startButton.classList.add('opacity-60', 'cursor-not-allowed');
     }
 }
@@ -137,12 +137,22 @@ function startGame() {
 function loadLevel() {
     const data = QUESTIONS[currentLevel];
     
-    document.getElementById('level-tag').textContent = data.bonus ? 'EXPERT BONUS' : `RIDDLE ${data.level}/10`;
+    const gujarati = activeLanguage === 'gu';
+    document.getElementById('level-tag').textContent = data.bonus
+        ? (gujarati ? 'નિષ્ણાત બોનસ' : 'EXPERT BONUS')
+        : (gujarati ? `કોયડો ${data.level}/10` : `RIDDLE ${data.level}/10`);
     const difficultyNames = {
         SIMPLE: 'EASY', MODERATE: 'MEDIUM', LOGICAL: 'MEDIUM', CLASSICAL: 'MEDIUM',
         HISTORIC: 'TRICKY', DIFFICULT: 'HARD', ADVANCED: 'HARD', EXPERT: 'EXPERT'
     };
-    document.getElementById('difficulty-tag').textContent = difficultyNames[data.difficulty] || data.difficulty;
+    const gujaratiDifficultyNames = {
+        SIMPLE: 'સરળ', MODERATE: 'મધ્યમ', LOGICAL: 'મધ્યમ', CLASSICAL: 'મધ્યમ',
+        HISTORIC: 'અઘરું', DIFFICULT: 'મુશ્કેલ', CRYPTIC: 'મુશ્કેલ', SCHOLARLY: 'ઘણું મુશ્કેલ',
+        COMPLEX: 'ઘણું મુશ્કેલ', LEGENDARY: 'અતિ મુશ્કેલ', EXPERT: 'નિષ્ણાત'
+    };
+    document.getElementById('difficulty-tag').textContent = gujarati
+        ? (gujaratiDifficultyNames[data.difficulty] || data.difficulty)
+        : (difficultyNames[data.difficulty] || data.difficulty);
     document.getElementById('clue-text').innerHTML = data.clue.replace(/\n/g, "<br>");
     document.getElementById('answer-input').value = "";
     document.getElementById('answer-input').focus();
@@ -345,7 +355,7 @@ function riskAndContinue() {
     } else {
         if (!bonusUnlocked && adaptiveAgent.shouldUnlockExpertChallenge(lives)) {
             bonusUnlocked = true;
-            QUESTIONS.push(TOUGHEST_QUESTION);
+            QUESTIONS.push(activeLanguage === 'gu' ? GUJARATI_TOUGHEST_QUESTION : TOUGHEST_QUESTION);
             currentLevel++;
             playSound('level-win');
             showScreen('gameplay-screen');

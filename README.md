@@ -26,6 +26,8 @@ python3 -m http.server 8000
 ## Daily challenge rules
 
 - One deterministic set of 10 riddles per local calendar day
+- English and Gujarati language selection remembered on the player's device
+- Ten original Gujarati riddles with Gujarati-script and Gujlish answer support
 - Difficulty and points increase from riddle 1 through riddle 10
 - Four lives per attempt
 - Revealing the first letter costs one life

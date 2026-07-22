@@ -77,3 +77,18 @@ const TOUGHEST_QUESTION = {
     hint: 'Ask what the other guard would say, then choose the opposite door.',
     points: 7500
 };
+
+const GUJARATI_TOUGHEST_QUESTION = {
+    level: 'BONUS',
+    bonus: true,
+    difficulty: 'EXPERT',
+    clue: 'એક ઘડિયાળ 6 ટકોરા મારવામાં 5 સેકન્ડ લે છે. તો 12 ટકોરા મારવામાં કેટલા સેકન્ડ લાગશે?',
+    answerHashes: [
+        '4fc82b26aecb47d2868c4efbe3581732a3e7cbcc6c2efb32062c08170a05eeb8',
+        'd4bc23a7660bbf93bceb4fa4416e165a0affb3a532ea22857c924d34ba9b2d3f',
+        '0ac1275eb908a30e2408f89bb1de5c7a46cd35fd38e0c9b8cd5777b7c39e3376'
+    ],
+    firstLetter: 'અ',
+    hint: '6 ટકોરા વચ્ચે 5 અંતર હોય છે. 12 ટકોરા વચ્ચે કેટલા અંતર હશે?',
+    points: 7500
+};
