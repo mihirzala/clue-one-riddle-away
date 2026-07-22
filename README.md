@@ -4,7 +4,7 @@ A single-player daily riddle game. Each player receives a new sequence of 10 inc
 
 ## Live game
 
-[Play Clue: One Riddle Away](https://clue-eosin.vercel.app/)
+[Play Clue: One Riddle Away](https://clue-riddle.vercel.app/)
 
 ## Run locally
 
