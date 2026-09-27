@@ -71,6 +71,7 @@ Answers are stored as SHA-256 fingerprints rather than readable text, and answer
 - Daily-challenge state (riddle assignment, progress, completion) lives in `localStorage`, keyed to the player ID. It is not currently verified server-side, so a sufficiently motivated player could inspect or reset it locally.
 - The "one attempt cycle per day, unlimited retries until 10/10" rule is enforced client-side.
 - Recent-riddle avoidance and per-player selection make answer-sharing harder, not impossible.
+- Because player identity and progress live only in `localStorage`, they can be lost outside the game's control — most commonly on iOS Safari, whose Intelligent Tracking Prevention can evict a site's `localStorage` after a period of inactivity, and whose "Add to Home Screen" standalone web apps run in an isolated storage context that iOS may clear under memory pressure. A returning player who loses this data will be asked for their name again and start a fresh run, even in a regular (non-private) browser tab. Fixing this would require a real account/login system (or at minimum a manual save/recovery code), which is out of scope for this iteration.
 
 ## Language
 
