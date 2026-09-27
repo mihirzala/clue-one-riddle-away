@@ -29,7 +29,12 @@ async function savePlayerName() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name })
         });
-        const data = await result.json();
+        let data;
+        try {
+            data = await result.json();
+        } catch {
+            throw new Error('Unable to save your name right now. Please try again later.');
+        }
         if (!result.ok) throw new Error(data.error || 'Unable to save your name.');
 
         localStorage.setItem(PLAYER_NAME_KEY, data.name);
