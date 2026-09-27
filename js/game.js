@@ -1,5 +1,4 @@
 let audioCtx = null;
-let audioMuted = false;
 
 function initAudio() {
     if (!audioCtx) {
@@ -8,7 +7,6 @@ function initAudio() {
 }
 
 function playSynthSound(freq, type, duration, slideTo = 0, gainValue = 0.12) {
-    if (audioMuted) return;
     initAudio();
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -71,12 +69,6 @@ function playSound(trigger) {
     }
 }
 
-function toggleAudio() {
-    audioMuted = !audioMuted;
-    document.getElementById('audio-on-icon').classList.toggle('hidden', audioMuted);
-    document.getElementById('audio-off-icon').classList.toggle('hidden', !audioMuted);
-    playSound('correct');
-}
 
 // Game State Core
 let currentLevel = 0;
