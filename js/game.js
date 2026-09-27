@@ -79,11 +79,12 @@ function toggleAudio() {
 }
 
 // Game State Core
-let currentLevel = 0; 
+let currentLevel = 0;
 let pendingScore = 0;
 let bankedScore = 0;
 let lives = 4;
 const maxLives = 4;
+const MIN_ANSWER_LENGTH_FOR_REVEAL = 3;
 let activeHintUsed = false;
 let revealedLetterCount = 0;
 let gameActive = false;
@@ -183,6 +184,9 @@ function loadLevel() {
     const hintBtn = document.getElementById('hint-btn');
     hintBtn.disabled = false;
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+    const firstLetterBtn = document.getElementById('first-letter-btn');
+    firstLetterBtn.classList.toggle('hidden', data.answer.length < MIN_ANSWER_LENGTH_FOR_REVEAL);
 
     if (currentLevel === 9 && !data.bonus) {
         activeHintUsed = true;
