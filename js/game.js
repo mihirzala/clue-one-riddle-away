@@ -189,12 +189,12 @@ function renderLives() {
     for (let i = 0; i < maxLives; i++) {
         const node = document.createElement('span');
         if (i < lives) {
-            node.innerHTML = `<svg class="w-6 h-6 drop-shadow-[0_2px_3px_rgba(30,64,175,0.35)] transition-transform duration-300 hover:scale-110" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="8.5" fill="#2563eb" stroke="#1e3a8a" stroke-width="1.5" />
+            node.innerHTML = `<svg class="w-6 h-6 drop-shadow-[0_2px_3px_rgba(234,88,12,0.35)] transition-transform duration-300 hover:scale-110" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8.5" fill="#f97316" stroke="#c2410c" stroke-width="1.5" />
             </svg>`;
         } else {
             node.innerHTML = `<svg class="w-6 h-6" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="8.5" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.5" />
+                <circle cx="12" cy="12" r="8.5" fill="#ffedd5" stroke="#fdba74" stroke-width="1.5" />
             </svg>`;
         }
         container.appendChild(node);
