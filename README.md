@@ -71,6 +71,7 @@ Answers are stored as SHA-256 fingerprints rather than readable text, and answer
 - Daily-challenge state (riddle assignment, progress, completion) lives in `localStorage`, keyed to the player ID. It is not currently verified server-side, so a sufficiently motivated player could inspect or reset it locally.
 - The "one attempt cycle per day, unlimited retries until 10/10" rule is enforced client-side.
 - Recent-riddle avoidance and per-player selection make answer-sharing harder, not impossible.
+- Some browsers (notably iOS Safari's Intelligent Tracking Prevention, and standalone "Add to Home Screen" web apps under memory pressure) can evict a site's `localStorage` even outside private browsing. Player identity (name + ID) survives this: `api/players.js` also sets it as a cookie via the server's HTTP response, which isn't subject to that eviction, and `js/player.js` restores `localStorage` from it automatically if needed — so a returning player isn't asked for their name again. In-progress run state (current riddle, score, lives) does not have this same backup, so if `localStorage` is wiped mid-run, that specific run resets to riddle 1 — but with the same day's riddle set, since selection is deterministic per player and date, not a new/different set.
 
 ## Language
 
@@ -79,3 +80,5 @@ Clue is English-only for this release. Gujarati support was removed from the act
 ## Player names and privacy
 
 First-time players are asked for a name and shown a storage notice before continuing. The backend validates the name, stores it with a random player ID and signup timestamp in a private Vercel Blob store, and returns the ID to the browser. Player records are not publicly readable.
+
+The player ID and name are kept in `localStorage` for normal use, and also set as a same-site cookie by the server's response (1-year expiry) so identity survives browser-level storage eviction — see "Remaining limitations" above.
