@@ -85,6 +85,7 @@ let bankedScore = 0;
 let lives = 4;
 const maxLives = 4;
 let activeHintUsed = false;
+let revealedLetterCount = 0;
 let gameActive = false;
 let bonusUnlocked = false;
 let isSubmitting = false;
@@ -157,6 +158,7 @@ function loadLevel() {
     document.getElementById('answer-input').focus();
 
     activeHintUsed = false;
+    revealedLetterCount = 0;
     document.getElementById('active-hint-box').classList.add('hidden');
     document.getElementById('active-hint-row').classList.add('hidden');
     document.getElementById('active-letter-row').classList.add('hidden');
@@ -320,21 +322,29 @@ function buyHint() {
 function buyFirstLetter() {
     if (lives <= 0) return;
 
+    const answer = QUESTIONS[currentLevel].answer;
+    if (revealedLetterCount >= answer.length) {
+        showMessageNotification("Whole answer already revealed!");
+        playSound('wrong');
+        return;
+    }
+
     lives--;
+    revealedLetterCount++;
     adaptiveAgent.recordLetterReveal();
     playSound('buy');
     renderLives();
 
-    const firstLetter = QUESTIONS[currentLevel].firstLetter;
+    const revealedText = answer.slice(0, revealedLetterCount);
 
-    document.getElementById('active-letter-text').textContent = firstLetter;
+    document.getElementById('active-letter-text').textContent = revealedText;
     document.getElementById('active-hint-box').classList.remove('hidden');
     document.getElementById('active-letter-row').classList.remove('hidden');
 
     if (lives <= 0) {
         triggerBust("You are out of lives.");
     } else {
-        showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
+        showMessageNotification(`Revealed: '${revealedText}' — 1 life used.`);
     }
 }
 
