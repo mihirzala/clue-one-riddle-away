@@ -85,7 +85,6 @@ let bankedScore = 0;
 let lives = 4;
 const maxLives = 4;
 let activeHintUsed = false;
-let activeFirstLetterUsed = false;
 let gameActive = false;
 let bonusUnlocked = false;
 let isSubmitting = false;
@@ -158,18 +157,13 @@ function loadLevel() {
     document.getElementById('answer-input').focus();
 
     activeHintUsed = false;
-    activeFirstLetterUsed = false;
     document.getElementById('active-hint-box').classList.add('hidden');
     document.getElementById('active-hint-row').classList.add('hidden');
     document.getElementById('active-letter-row').classList.add('hidden');
-    
+
     const hintBtn = document.getElementById('hint-btn');
     hintBtn.disabled = false;
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-    const firstLetterBtn = document.getElementById('first-letter-btn');
-    firstLetterBtn.disabled = false;
-    firstLetterBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
     if (currentLevel === 9 && !data.bonus) {
         activeHintUsed = true;
@@ -324,16 +318,9 @@ function buyHint() {
 }
 
 function buyFirstLetter() {
-    if (activeFirstLetterUsed) return;
-
-    if (lives <= 1) {
-        showMessageNotification("You need at least 2 lives to use this.");
-        playSound('wrong');
-        return;
-    }
+    if (lives <= 0) return;
 
     lives--;
-    activeFirstLetterUsed = true;
     adaptiveAgent.recordLetterReveal();
     playSound('buy');
     renderLives();
@@ -344,11 +331,11 @@ function buyFirstLetter() {
     document.getElementById('active-hint-box').classList.remove('hidden');
     document.getElementById('active-letter-row').classList.remove('hidden');
 
-    const firstLetterBtn = document.getElementById('first-letter-btn');
-    firstLetterBtn.disabled = true;
-    firstLetterBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-    showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
+    if (lives <= 0) {
+        triggerBust("You are out of lives.");
+    } else {
+        showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
+    }
 }
 
 function bankAndLeave() {
