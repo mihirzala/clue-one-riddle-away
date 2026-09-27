@@ -65,11 +65,16 @@ async function savePlayerName() {
         localStorage.setItem(PLAYER_NAME_KEY, data.name);
         localStorage.setItem(PLAYER_ID_KEY, data.playerId);
         document.getElementById('player-modal').classList.add('hidden');
+        document.getElementById('rules-modal').classList.remove('hidden');
     } catch (saveError) {
         error.textContent = saveError.message;
         button.disabled = false;
         button.textContent = 'CONTINUE';
     }
+}
+
+function closeRulesModal() {
+    document.getElementById('rules-modal').classList.add('hidden');
 }
 
 document.getElementById('player-name-input').addEventListener('keydown', (event) => {
