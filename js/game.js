@@ -167,6 +167,10 @@ function loadLevel() {
     hintBtn.disabled = false;
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
+    const firstLetterBtn = document.getElementById('first-letter-btn');
+    firstLetterBtn.disabled = false;
+    firstLetterBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
     if (currentLevel === 9 && !data.bonus) {
         activeHintUsed = true;
         document.getElementById('active-hint-text').textContent = data.hint;
@@ -320,11 +324,7 @@ function buyHint() {
 }
 
 function buyFirstLetter() {
-    if (activeFirstLetterUsed) {
-        showMessageNotification("First letter already revealed!");
-        playSound('wrong');
-        return;
-    }
+    if (activeFirstLetterUsed) return;
 
     if (lives <= 1) {
         showMessageNotification("You need at least 2 lives to use this.");
@@ -343,6 +343,10 @@ function buyFirstLetter() {
     document.getElementById('active-letter-text').textContent = firstLetter;
     document.getElementById('active-hint-box').classList.remove('hidden');
     document.getElementById('active-letter-row').classList.remove('hidden');
+
+    const firstLetterBtn = document.getElementById('first-letter-btn');
+    firstLetterBtn.disabled = true;
+    firstLetterBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
     showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
 }
@@ -478,7 +482,8 @@ function showMessageNotification(msg) {
 
     const alertDiv = document.createElement('div');
     alertDiv.id = "toast-msg";
-    alertDiv.className = "fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-white border-2 border-[#2c1e11] text-[#2c1e11] text-xs font-clue px-5 py-2.5 rounded-lg shadow-xl z-50 animate-bounce tracking-wide text-center max-w-xs w-11/12 font-bold";
+    alertDiv.className = "bg-white border-2 border-[#2c1e11] text-[#2c1e11] text-xs font-clue px-5 py-2.5 rounded-lg shadow-xl z-50 animate-bounce tracking-wide text-center max-w-xs w-11/12 font-bold";
+    alertDiv.style.cssText = "position:fixed; bottom:64px; left:50%; transform:translateX(-50%);";
     alertDiv.textContent = msg;
 
     document.body.appendChild(alertDiv);
