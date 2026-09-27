@@ -78,6 +78,7 @@ let lives = 4;
 const maxLives = 4;
 let gameActive = false;
 let isSubmitting = false;
+let questionResolved = false;
 let dailyState = null;
 let selectionPlayerId = null;
 
@@ -216,13 +217,16 @@ function renderClueTrail() {
 
 function loadLevel() {
     const data = QUESTIONS[currentLevel];
+    questionResolved = false;
 
     document.getElementById('level-tag').textContent = `RIDDLE ${currentLevel + 1}/${QUESTIONS.length}`;
     document.getElementById('difficulty-tag').textContent = data.difficulty;
     const clueWithTrail = fillTrailPlaceholder(data.clue, dailyState ? dailyState.trail : []);
     document.getElementById('clue-text').innerHTML = clueWithTrail.replace(/\n/g, "<br>");
     document.getElementById('answer-input').value = "";
+    document.getElementById('answer-input').disabled = false;
     document.getElementById('answer-input').focus();
+    document.getElementById('check-answer-button').disabled = false;
 
     renderClueTrail();
 
@@ -319,7 +323,7 @@ function normalizeAnswer(raw) {
 }
 
 async function submitAnswer() {
-    if (!gameActive || isSubmitting) return;
+    if (!gameActive || isSubmitting || questionResolved) return;
 
     const inputEl = document.getElementById('answer-input');
     const rawValue = inputEl.value;
@@ -347,7 +351,32 @@ async function submitAnswer() {
     }
 }
 
+const ANSWER_MERGE_ANIMATION_MS = 1100;
+
+function playAnswerMergeAnimation(answerText) {
+    const fx = document.getElementById('answer-merge-fx');
+    const left = document.getElementById('merge-word-left');
+    const right = document.getElementById('merge-word-right');
+    const result = document.getElementById('merge-word-result');
+
+    left.textContent = 'CLUE';
+    right.textContent = answerText.toUpperCase();
+    result.textContent = `✓ ${answerText.toUpperCase()}`;
+
+    fx.classList.remove('hidden');
+    [left, right, result].forEach((el) => {
+        el.style.animation = 'none';
+        void el.offsetWidth; // restart the CSS animation even if it just played
+        el.style.animation = '';
+    });
+
+    setTimeout(() => {
+        fx.classList.add('hidden');
+    }, ANSWER_MERGE_ANIMATION_MS);
+}
+
 function handleCorrectAnswer() {
+    questionResolved = true;
     playSound('correct');
 
     const activeLevelData = QUESTIONS[currentLevel];
@@ -359,6 +388,12 @@ function handleCorrectAnswer() {
     }
     persistDailyState();
 
+    // Disable input while the merge animation plays so the same correct
+    // answer can't be resubmitted for extra points before the screen moves on.
+    document.getElementById('answer-input').disabled = true;
+    document.getElementById('check-answer-button').disabled = true;
+    playAnswerMergeAnimation(activeLevelData.answer);
+
     document.getElementById('layer-payout-text').textContent = `+${currentPayout} pts`;
     document.getElementById('crossroads-pending-text').textContent = `${pendingScore} pts`;
 
@@ -369,7 +404,9 @@ function handleCorrectAnswer() {
         nextLevelBtnText.textContent = "Finish the Game";
     }
 
-    showScreen('crossroads-screen');
+    setTimeout(() => {
+        showScreen('crossroads-screen');
+    }, ANSWER_MERGE_ANIMATION_MS);
 }
 
 function handleIncorrectAnswer() {
