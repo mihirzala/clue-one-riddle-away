@@ -120,7 +120,16 @@
 
                 <!-- Riddle Parchment Box -->
                 <div class="bg-white border-2 border-[#2c1e11] rounded-2xl p-4 relative overflow-hidden flex flex-col justify-between gold-border-lux parchment-glow min-h-[260px] max-h-[50vh]" id="terminal-container">
-                    
+
+                    <!-- Answer merge animation: "CLUE" + the answer slide together on a correct solve -->
+                    <div id="answer-merge-fx" class="hidden absolute inset-0 z-20 flex items-center justify-center bg-white/90 pointer-events-none">
+                        <div class="relative w-full h-10 flex items-center justify-center">
+                            <span id="merge-word-left" class="merge-chip merge-chip-left"></span>
+                            <span id="merge-word-right" class="merge-chip merge-chip-right"></span>
+                            <span id="merge-word-result" class="merge-chip merge-chip-result"></span>
+                        </div>
+                    </div>
+
                     <!-- Level Metadata -->
                     <div class="flex justify-between items-center mb-2 shrink-0">
                         <span class="px-2 py-0.5 bg-[#faf7f2] border border-[#2c1e11]/20 text-[#2c1e11] text-[9px] font-bold font-premium-header rounded" id="level-tag">RIDDLE 1/10</span>
