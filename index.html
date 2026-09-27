@@ -42,29 +42,18 @@
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="border-b-2 border-[#2c1e11]/20 bg-white/70 backdrop-blur-md shrink-0 px-6 py-2.5 shadow-sm">
-        <div class="max-w-4xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center gap-2">
-            <div></div>
-
-            <div class="flex items-center justify-center space-x-3">
-                <div class="w-12 h-12 rounded-full bg-[#fcfaf2] border-2 border-[#2c1e11]/30 flex items-center justify-center shadow-inner shrink-0">
-                    <svg class="w-6 h-6 text-[#2c1e11]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                </div>
-                <div class="text-center">
-                    <h1 class="text-3xl md:text-5xl font-bold font-premium-header tracking-widest clue-title-premium">CLUE</h1>
-                    <p class="text-[9px] tracking-[0.08em] text-[#2c1e11] font-extrabold">one riddle away</p>
-                    <p class="text-[7px] tracking-[0.08em] text-[#2c1e11]/50 font-bold mt-0.5">Powered by HeCMe</p>
-                </div>
+    <!-- Header: a slim utility bar only, kept clear of the iPhone notch/Dynamic Island -->
+    <header class="border-b-2 border-[#2c1e11]/20 bg-white/70 backdrop-blur-md shrink-0 px-6 py-1.5 shadow-sm">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+            <div class="w-8 h-8 rounded-full bg-[#fcfaf2] border-2 border-[#2c1e11]/30 flex items-center justify-center shadow-inner shrink-0">
+                <svg class="w-4 h-4 text-[#2c1e11]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 00-2 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
             </div>
 
-            <div class="flex items-center justify-end space-x-4">
-                <div class="text-right hidden sm:block">
-                    <span class="text-[8px] text-[#2c1e11]/80 block font-premium-header tracking-wider">BEST SCORE</span>
-                    <span id="session-high-score" class="text-xs font-bold text-[#2c1e11] font-premium-header">0 pts</span>
-                </div>
+            <div class="text-right">
+                <span class="text-[8px] text-[#2c1e11]/80 block font-premium-header tracking-wider">BEST SCORE</span>
+                <span id="session-high-score" class="text-xs font-bold text-[#2c1e11] font-premium-header">0 pts</span>
             </div>
         </div>
     </header>
@@ -72,7 +61,14 @@
     <!-- Main Game Frame -->
     <main class="flex-grow flex items-center justify-center px-4 py-2 overflow-hidden">
         <div class="w-full max-w-xl mx-auto flex flex-col justify-center overflow-hidden">
-            
+
+            <!-- CLUE brand: kept in the vertically-centered main content, away from the top notch area -->
+            <div id="clue-brand" class="text-center mb-4 shrink-0">
+                <h1 class="text-4xl md:text-6xl font-bold font-premium-header tracking-widest clue-title-premium">CLUE</h1>
+                <p class="text-[10px] tracking-[0.08em] text-[#2c1e11] font-extrabold">one riddle away</p>
+                <p class="text-[7px] tracking-[0.08em] text-[#2c1e11]/50 font-bold mt-0.5">Powered by HeCMe</p>
+            </div>
+
             <!-- Welcome Screen -->
             <div id="welcome-screen" class="bg-gradient-to-br from-white via-orange-50 to-amber-100 border-2 border-orange-500 rounded-3xl p-7 md:p-10 shadow-[0_18px_45px_rgba(234,88,12,0.18)]">
                 <div class="text-center space-y-6">

@@ -133,6 +133,11 @@ function showScreen(screenId) {
     document.getElementById('game-over-screen').classList.add('hidden');
 
     document.getElementById(screenId).classList.remove('hidden');
+
+    // Keep the CLUE brand visible on the welcome screen (where it's the first
+    // impression), but hide it once gameplay starts so the tightly-fit,
+    // no-scroll gameplay console isn't squeezed for vertical space.
+    document.getElementById('clue-brand').classList.toggle('hidden', screenId !== 'welcome-screen');
 }
 
 function startGame() {
