@@ -26,11 +26,16 @@ export default async function handler(request, response) {
     }
 
     const playerId = randomUUID();
-    await put(
-        `players/${Date.now()}-${playerId}.json`,
-        JSON.stringify({ playerId, name, createdAt: new Date().toISOString() }),
-        { access: 'private', addRandomSuffix: false, contentType: 'application/json' }
-    );
+    try {
+        await put(
+            `players/${Date.now()}-${playerId}.json`,
+            JSON.stringify({ playerId, name, createdAt: new Date().toISOString() }),
+            { access: 'private', addRandomSuffix: false, contentType: 'application/json' }
+        );
+    } catch (error) {
+        console.error('Failed to store player record:', error);
+        return response.status(500).json({ error: 'Unable to save your name right now. Please try again later.' });
+    }
 
     return response.status(201).json({ playerId, name });
 }
