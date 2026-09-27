@@ -11,9 +11,7 @@ let activeLanguage = localStorage.getItem('clue_language') === 'gu' ? 'gu' : 'en
 
 function buildDailyQuestions(language) {
     if (language === 'gu') return GUJARATI_QUESTIONS.map((question) => ({ ...question }));
-    return BASE_QUESTIONS.map((question, index) => ({
-        ...(((challengeDay - 1) >> index) & 1 ? ALT_QUESTIONS[index] : question)
-    }));
+    return NORMAL_CHAIN_EN.map((question) => ({ ...question }));
 }
 
 const QUESTIONS = buildDailyQuestions(activeLanguage);

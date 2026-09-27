@@ -112,12 +112,29 @@ function showScreen(screenId) {
     document.getElementById(screenId).classList.remove('hidden');
 }
 
-function startGame() {
+async function startGame() {
     if (renewChallengeIfDateChanged()) return;
     if (localStorage.getItem('clue_daily_completed') === dailyKey) {
         showMessageNotification("You finished today’s 10 riddles. Come back tomorrow!");
         return;
     }
+
+    const playerId = localStorage.getItem(PLAYER_ID_KEY);
+    if (playerId) {
+        try {
+            const result = await fetch(`/api/daily-status?playerId=${encodeURIComponent(playerId)}&date=${encodeURIComponent(dailyKey)}`);
+            const data = await result.json();
+            if (result.ok && data.completed) {
+                localStorage.setItem('clue_daily_completed', dailyKey);
+                updateDailyButton();
+                showMessageNotification("You finished today’s 10 riddles. Come back tomorrow!");
+                return;
+            }
+        } catch {
+            // Server check unavailable — fall back to the local flag already checked above.
+        }
+    }
+
     initAudio();
     currentLevel = 0;
     pendingScore = 0;
@@ -236,21 +253,44 @@ async function submitAnswer() {
     }
 }
 
+const FAST_ANSWER_THRESHOLD_MS = 20000;
+
+function maybeEscalateNextLevelDifficulty() {
+    if (activeLanguage !== 'en') return false;
+    const nextIndex = currentLevel + 1;
+    if (nextIndex >= QUESTIONS.length || !HARD_CHAIN_EN[nextIndex]) return false;
+
+    const answeredFast = (Date.now() - adaptiveAgent.questionStartedAt) <= FAST_ANSWER_THRESHOLD_MS;
+    const answeredCleanly = adaptiveAgent.attemptsOnQuestion === 1 && !activeHintUsed && revealedLetterCount === 0;
+
+    if (answeredFast && answeredCleanly) {
+        QUESTIONS[nextIndex] = { ...HARD_CHAIN_EN[nextIndex] };
+        return true;
+    }
+    return false;
+}
+
 function handleCorrectAnswer() {
     playSound('correct');
-    
+
     const activeLevelData = QUESTIONS[currentLevel];
     const currentPayout = activeLevelData.points;
     pendingScore += currentPayout;
 
     document.getElementById('layer-payout-text').textContent = `+${currentPayout} pts`;
     document.getElementById('crossroads-pending-text').textContent = `${pendingScore} pts`;
-    
+
+    const escalated = maybeEscalateNextLevelDifficulty();
+
     const nextLevelBtnText = document.getElementById('next-level-btn-text');
     if (currentLevel < QUESTIONS.length - 1) {
         nextLevelBtnText.textContent = `Try Riddle ${currentLevel + 2}`;
     } else {
         nextLevelBtnText.textContent = "Finish the Game";
+    }
+
+    if (escalated) {
+        showMessageNotification("Fast, clean answer! Next riddle just got harder.");
     }
 
     showScreen('crossroads-screen');
@@ -327,6 +367,11 @@ function buyFirstLetter() {
         showMessageNotification("Whole answer already revealed!");
         playSound('wrong');
         return;
+    }
+
+    if (lives === 2) {
+        const proceed = confirm("This will leave you with only 1 life. Reveal another letter anyway?");
+        if (!proceed) return;
     }
 
     lives--;
@@ -437,6 +482,15 @@ function handleCompleteMastery() {
     updateHighScore(bankedScore);
     localStorage.setItem('clue_daily_completed', dailyKey);
     updateDailyButton();
+
+    const playerId = localStorage.getItem(PLAYER_ID_KEY);
+    if (playerId) {
+        fetch('/api/daily-status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ playerId, date: dailyKey })
+        }).catch(() => {});
+    }
 
     document.getElementById('game-over-icon').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
