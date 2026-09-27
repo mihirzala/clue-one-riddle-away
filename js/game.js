@@ -85,7 +85,6 @@ let bankedScore = 0;
 let lives = 4;
 const maxLives = 4;
 let activeHintUsed = false;
-let activeFirstLetterUsed = false;
 let gameActive = false;
 let bonusUnlocked = false;
 let isSubmitting = false;
@@ -158,18 +157,13 @@ function loadLevel() {
     document.getElementById('answer-input').focus();
 
     activeHintUsed = false;
-    activeFirstLetterUsed = false;
     document.getElementById('active-hint-box').classList.add('hidden');
     document.getElementById('active-hint-row').classList.add('hidden');
     document.getElementById('active-letter-row').classList.add('hidden');
-    
+
     const hintBtn = document.getElementById('hint-btn');
     hintBtn.disabled = false;
     hintBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-    const firstLetterBtn = document.getElementById('first-letter-btn');
-    firstLetterBtn.disabled = false;
-    firstLetterBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
     if (currentLevel === 9 && !data.bonus) {
         activeHintUsed = true;
@@ -324,16 +318,9 @@ function buyHint() {
 }
 
 function buyFirstLetter() {
-    if (activeFirstLetterUsed) return;
-
-    if (lives <= 1) {
-        showMessageNotification("You need at least 2 lives to use this.");
-        playSound('wrong');
-        return;
-    }
+    if (lives <= 0) return;
 
     lives--;
-    activeFirstLetterUsed = true;
     adaptiveAgent.recordLetterReveal();
     playSound('buy');
     renderLives();
@@ -344,11 +331,11 @@ function buyFirstLetter() {
     document.getElementById('active-hint-box').classList.remove('hidden');
     document.getElementById('active-letter-row').classList.remove('hidden');
 
-    const firstLetterBtn = document.getElementById('first-letter-btn');
-    firstLetterBtn.disabled = true;
-    firstLetterBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-    showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
+    if (lives <= 0) {
+        triggerBust("You are out of lives.");
+    } else {
+        showMessageNotification(`First letter: '${firstLetter}' — 1 life used.`);
+    }
 }
 
 function bankAndLeave() {
@@ -480,16 +467,19 @@ function showMessageNotification(msg) {
         existingMsg.remove();
     }
 
+    const wrapper = document.createElement('div');
+    wrapper.id = "toast-msg";
+    wrapper.style.cssText = "position:fixed; bottom:64px; left:50%; transform:translateX(-50%); z-index:50; width:90%; max-width:20rem; display:flex; justify-content:center; pointer-events:none;";
+
     const alertDiv = document.createElement('div');
-    alertDiv.id = "toast-msg";
-    alertDiv.className = "bg-white border-2 border-[#2c1e11] text-[#2c1e11] text-xs font-clue px-5 py-2.5 rounded-lg shadow-xl z-50 animate-bounce tracking-wide text-center max-w-xs w-11/12 font-bold";
-    alertDiv.style.cssText = "position:fixed; bottom:64px; left:50%; transform:translateX(-50%);";
+    alertDiv.className = "bg-white border-2 border-[#2c1e11] text-[#2c1e11] text-xs font-clue px-5 py-2.5 rounded-lg shadow-xl animate-bounce tracking-wide text-center font-bold";
     alertDiv.textContent = msg;
 
-    document.body.appendChild(alertDiv);
-    
+    wrapper.appendChild(alertDiv);
+    document.body.appendChild(wrapper);
+
     setTimeout(() => {
-        alertDiv.remove();
+        wrapper.remove();
     }, 3000);
 }
 
