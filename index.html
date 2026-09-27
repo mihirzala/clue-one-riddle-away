@@ -75,10 +75,6 @@
                         <p id="welcome-description" class="text-[#5f4026] text-sm md:text-base font-bold">Solve today’s 10 riddles. Each one gets harder.</p>
                         <p id="daily-challenge-label" class="text-blue-700 text-xs font-extrabold tracking-wider">DAY 1 OF 365</p>
                     </div>
-                    <div class="inline-flex rounded-xl border-2 border-orange-300 bg-white p-1 shadow-sm" aria-label="Riddle language">
-                        <button id="language-en" type="button" onclick="setGameLanguage('en')" class="rounded-lg bg-orange-500 px-4 py-2 text-xs font-extrabold text-white">English</button>
-                        <button id="language-gu" type="button" onclick="setGameLanguage('gu')" class="rounded-lg px-4 py-2 text-xs font-extrabold text-[#2c1e11]">ગુજરાતી</button>
-                    </div>
                     <div>
                         <button id="start-game-button" onclick="startGame()" class="orange-button px-10 py-3.5 font-bold font-premium-header tracking-wider rounded-2xl text-sm md:text-base w-full sm:w-auto">
                             START GAME
@@ -107,6 +103,9 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Clue Trail: theme words collected as riddles are solved -->
+                <div id="clue-trail" class="hidden flex flex-wrap gap-1 justify-center px-1 shrink-0"></div>
 
                 <!-- Riddle Parchment Box -->
                 <div class="bg-white border-2 border-[#2c1e11] rounded-2xl p-4 relative overflow-hidden flex flex-col justify-between gold-border-lux parchment-glow min-h-[260px] max-h-[50vh]" id="terminal-container">
@@ -142,9 +141,9 @@
                         <div class="flex flex-col sm:flex-row gap-2">
                             <div class="relative flex-grow">
                                 <input type="text" id="answer-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type your answer..." class="w-full bg-[#faf7f2] border-2 border-[#2c1e11]/25 focus:border-[#2c1e11] text-[#2c1e11] font-clue rounded-lg px-3 py-2.5 outline-none transition-all placeholder:text-[#2c1e11]/40 text-xs font-bold">
-                                <button onclick="buyHint()" id="hint-btn" class="absolute right-2 top-1.5 orange-button text-[9px] font-bold font-premium-header px-2 py-1.5 rounded flex items-center space-x-1" title="Costs 50 pts">
+                                <button onclick="buyHint()" id="hint-btn" class="absolute right-2 top-1.5 orange-button text-[9px] font-bold font-premium-header px-2 py-1.5 rounded flex items-center space-x-1" title="Costs points">
                                     <span class="hidden sm:inline">Get Hint</span>
-                                    <span class="bg-black/20 px-1 rounded text-white font-normal">50 pts</span>
+                                    <span id="hint-cost-label" class="bg-black/20 px-1 rounded text-white font-normal">25 pts</span>
                                 </button>
                             </div>
                             <button id="check-answer-button" onclick="submitAnswer()" class="orange-button font-premium-header font-bold px-5 py-2.5 rounded-lg transition-all duration-200 transform active:scale-[0.98] shrink-0 flex items-center justify-center space-x-1.5 text-xs tracking-wider">
@@ -160,7 +159,7 @@
 
                 <!-- Simplified Power-ups -->
                 <div class="shrink-0">
-                    <button onclick="buyFirstLetter()" class="w-full bg-white border-2 border-[#2c1e11]/20 hover:border-[#2c1e11]/50 hover:bg-[#faf7f2]/50 rounded-xl p-2 text-left transition-all flex items-center justify-center space-x-2 group shadow-sm">
+                    <button onclick="buyFirstLetter()" id="first-letter-btn" class="w-full bg-white border-2 border-[#2c1e11]/20 hover:border-[#2c1e11]/50 hover:bg-[#faf7f2]/50 rounded-xl p-2 text-left transition-all flex items-center justify-center space-x-2 group shadow-sm">
                         <div class="p-1 rounded-full bg-[#faf7f2] border border-[#2c1e11]/10 text-[#2c1e11] shrink-0 group-hover:scale-105 transition-transform">
                             <svg class="w-3.5 h-3.5 text-[#2c1e11]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -168,8 +167,8 @@
                             </svg>
                         </div>
                         <div class="min-w-0">
-                            <span class="text-[9px] font-bold text-[#2c1e11] font-premium-header block truncate">Reveal Letter</span>
-                            <span class="text-[8px] text-[#2c1e11]/80 font-bold">Costs <strong class="text-blue-700">1 life</strong></span>
+                            <span id="first-letter-label" class="text-[9px] font-bold text-[#2c1e11] font-premium-header block truncate">Reveal Letter</span>
+                            <span id="first-letter-cost-label" class="text-[8px] text-[#2c1e11]/80 font-bold">Costs <strong class="text-blue-700">1 life</strong></span>
                         </div>
                     </button>
 
@@ -276,6 +275,9 @@
     <!-- Scripts & Audio -->
     <script src="js/player.js"></script>
     <script src="js/questions.js"></script>
+    <script src="js/riddle-selector.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/hints.js"></script>
     <script src="js/daily.js"></script>
     <script src="js/adaptive.js"></script>
     <script src="js/game.js"></script>
