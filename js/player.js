@@ -1,7 +1,32 @@
 const PLAYER_NAME_KEY = 'clue_player_name';
 const PLAYER_ID_KEY = 'clue_player_id';
 
+function readCookie(name) {
+    const escaped = name.replace(/[.$?*|{}()[\]\\/+^]/g, '\\$&');
+    const match = document.cookie.match(new RegExp('(?:^|; )' + escaped + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
+// localStorage can be wiped by the browser itself (notably iOS Safari's
+// Intelligent Tracking Prevention, or standalone "Add to Home Screen" apps
+// under memory pressure) even outside private browsing. The player-id/name
+// cookies set by api/players.js are set via the server's HTTP response, not
+// client-side JS, so they aren't subject to that same eviction — use them
+// to recognize a returning player whose localStorage came back empty,
+// instead of asking for their name again and starting a new run.
+function restoreIdentityFromCookieIfNeeded() {
+    if (localStorage.getItem(PLAYER_NAME_KEY) && localStorage.getItem(PLAYER_ID_KEY)) return;
+
+    const cookieName = readCookie(PLAYER_NAME_KEY);
+    const cookieId = readCookie(PLAYER_ID_KEY);
+    if (cookieName && cookieId) {
+        localStorage.setItem(PLAYER_NAME_KEY, cookieName);
+        localStorage.setItem(PLAYER_ID_KEY, cookieId);
+    }
+}
+
 function showPlayerModal() {
+    restoreIdentityFromCookieIfNeeded();
     if (!localStorage.getItem(PLAYER_NAME_KEY)) {
         document.getElementById('player-modal').classList.remove('hidden');
         document.getElementById('player-name-input').focus();
