@@ -65,15 +65,17 @@
     <main class="flex-grow flex items-center justify-center px-4 py-2 overflow-hidden">
         <div class="w-full max-w-xl mx-auto flex flex-col justify-center overflow-hidden">
 
+            <!-- CLUE brand: always shown here, above whichever screen is active
+                 (the welcome card or the gameplay status bar) -->
+            <div class="text-center mb-4 shrink-0">
+                <h1 class="text-4xl md:text-5xl font-bold font-premium-header tracking-widest clue-title-premium">CLUE</h1>
+                <p class="text-[9px] tracking-[0.08em] text-[#2c1e11] font-extrabold mt-1">one riddle away</p>
+                <p class="text-[7px] tracking-[0.08em] text-[#2c1e11]/50 font-bold mt-0.5">Powered by HeCMe</p>
+            </div>
+
             <!-- Welcome Screen -->
             <div id="welcome-screen" class="bg-gradient-to-br from-white via-orange-50 to-amber-100 border-2 border-orange-500 rounded-3xl p-7 md:p-10 shadow-[0_18px_45px_rgba(234,88,12,0.18)]">
                 <div class="text-center space-y-6">
-                    <!-- CLUE brand: the true center of the screen, not the top -->
-                    <div>
-                        <h1 class="text-4xl md:text-6xl font-bold font-premium-header tracking-widest clue-title-premium">CLUE</h1>
-                        <p class="text-[10px] tracking-[0.08em] text-[#2c1e11] font-extrabold mt-1">one riddle away</p>
-                        <p class="text-[7px] tracking-[0.08em] text-[#2c1e11]/50 font-bold mt-0.5">Powered by HeCMe</p>
-                    </div>
                     <div class="flex justify-center items-center gap-3 text-3xl" aria-hidden="true">
                         <span class="w-14 h-14 flex items-center justify-center rounded-2xl bg-white shadow-md -rotate-6">💡</span>
                         <span class="w-16 h-16 flex items-center justify-center rounded-2xl bg-orange-500 shadow-lg text-4xl rotate-3">🔎</span>
