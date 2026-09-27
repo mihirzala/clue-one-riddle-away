@@ -73,7 +73,7 @@ const TOUGHEST_QUESTION = {
         '63297a8d6f9b6cef0f906eba87cb562871f46ec5e9b5daf56ec693c75e2357ba',
         '96d46597965b171b8df952cc898d0d624d80b7c6b1ca4802c6865103b9adc3c7'
     ],
-    firstLetter: 'W',
+    answer: 'what would the other guard say',
     hint: 'Ask what the other guard would say, then choose the opposite door.',
     points: 7500
 };
@@ -88,7 +88,7 @@ const GUJARATI_TOUGHEST_QUESTION = {
         'd4bc23a7660bbf93bceb4fa4416e165a0affb3a532ea22857c924d34ba9b2d3f',
         '0ac1275eb908a30e2408f89bb1de5c7a46cd35fd38e0c9b8cd5777b7c39e3376'
     ],
-    firstLetter: 'અ',
+    answer: '11',
     hint: '6 ટકોરા વચ્ચે 5 અંતર હોય છે. 12 ટકોરા વચ્ચે કેટલા અંતર હશે?',
     points: 7500
 };
