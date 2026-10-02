@@ -105,6 +105,12 @@ function refreshStartButtonForTodayStatus() {
     if (state && state.status === 'completed') {
         startButton.textContent = "TODAY’S CHALLENGE COMPLETE";
         startButton.classList.add('opacity-60', 'cursor-not-allowed');
+    } else if (state && state.status === 'ended') {
+        startButton.textContent = "COME BACK TOMORROW";
+        startButton.classList.add('opacity-60', 'cursor-not-allowed');
+    } else if (state && state.status === 'in_progress') {
+        startButton.textContent = "RESUME GAME";
+        startButton.classList.remove('opacity-60', 'cursor-not-allowed');
     } else {
         startButton.textContent = "START GAME";
         startButton.classList.remove('opacity-60', 'cursor-not-allowed');
@@ -146,6 +152,14 @@ function startGame() {
         return;
     }
 
+    // One attempt per day, period — running out of lives or banking early
+    // both end today's attempt for good, just like finishing all 10 does.
+    // Only an attempt still 'in_progress' (e.g. after a refresh) may resume.
+    if (existing && existing.status === 'ended') {
+        showMessageNotification("Today’s attempt has ended. Come back tomorrow for a new set!");
+        return;
+    }
+
     initAudio();
 
     if (existing && existing.status === 'in_progress') {
@@ -156,9 +170,7 @@ function startGame() {
         bankedScore = existing.bankedScore;
         lives = existing.lives;
     } else {
-        // Fresh attempt. The riddle set itself is deterministic for
-        // player+day, so this is the same 10 riddles even if the player
-        // busted or banked earlier today and is trying again.
+        // No attempt started yet today.
         const riddles = pickDailyRiddles(selectionPlayerId, dailyKey);
         recordRiddlesShown(riddles.map((r) => r.id), dailyKey);
         dailyState = createFreshDailyState(selectionPlayerId, dailyKey, riddles.map((r) => r.id));

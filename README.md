@@ -35,8 +35,8 @@ python3 -m http.server 8000
 
 - Exactly 10 riddles per player per local calendar day — never 9, never 11, no bonus riddle
 - Riddles are assigned deterministically from `(player ID, local date, difficulty tier)`: the same player always gets the same 10 riddles on the same day, but different players generally get different riddles
-- A refresh, a closed-and-reopened tab, or clicking "Play Again" after a loss never rerolls today's set or loses in-progress state
-- Once all 10 are solved, that day's challenge is locked until the next local day
+- **One attempt per player per local calendar day.** A refresh or a closed-and-reopened tab resumes an in-progress attempt exactly where it left off, but running out of lives or banking points ends that attempt for good — it does not grant a new one. Only finishing or starting a new local day unlocks a fresh attempt
+- Once an attempt ends (by busting, banking, or solving all 10), that day's challenge is locked until the next local day
 - Riddles avoid repeating ones the same player saw in roughly the last 3 weeks, when the pool allows it
 - Four lives per attempt; each riddle offers up to 2 written hints (costing round points) and a length-aware reveal (costing a life) — see "Hints and reveals" below
 - A new challenge becomes available at 12:00 AM in the player's local timezone
@@ -69,7 +69,7 @@ Answers are stored as SHA-256 fingerprints rather than readable text, and answer
 ## Remaining limitations (client-side only, for now)
 
 - Daily-challenge state (riddle assignment, progress, completion) lives in `localStorage`, keyed to the player ID. It is not currently verified server-side, so a sufficiently motivated player could inspect or reset it locally.
-- The "one attempt cycle per day, unlimited retries until 10/10" rule is enforced client-side.
+- The one-attempt-per-day rule is enforced client-side (via `localStorage`'s daily-state `status` field), so it isn't tamper-proof against a sufficiently motivated player.
 - Recent-riddle avoidance and per-player selection make answer-sharing harder, not impossible.
 - Some browsers (notably iOS Safari's Intelligent Tracking Prevention, and standalone "Add to Home Screen" web apps under memory pressure) can evict a site's `localStorage` even outside private browsing. Player identity (name + ID) survives this: `api/players.js` also sets it as a cookie via the server's HTTP response, which isn't subject to that eviction, and `js/player.js` restores `localStorage` from it automatically if needed — so a returning player isn't asked for their name again. In-progress run state (current riddle, score, lives) does not have this same backup, so if `localStorage` is wiped mid-run, that specific run resets to riddle 1 — but with the same day's riddle set, since selection is deterministic per player and date, not a new/different set.
 
