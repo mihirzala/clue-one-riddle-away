@@ -46,7 +46,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t1-03", tier: 1, difficulty: "EASY",
             clue: "I have a face and two hands, but no arms or legs. What am I?",
-            answerHashes: ["f583a793a95fd25c63584df768a1b9e275f0d978293ffd93587c446b867ca31b"],
+            answerHashes: ["f583a793a95fd25c63584df768a1b9e275f0d978293ffd93587c446b867ca31b", "d8198efa3604d164853468608c55efa148bc56e3564d5a30232bf98b8ab43aeb"],
             answer: "a clock",
             hint1: "You check me to stay on time.",
             hint2: "My hands point at numbers, not at things.",
@@ -56,7 +56,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t1-04", tier: 1, difficulty: "EASY",
             clue: "What has one eye but cannot see?",
-            answerHashes: ["d37e6b10ad528f320bd9887f16d913907760c864d32dc5dfa44ffa38803877c3"],
+            answerHashes: ["d37e6b10ad528f320bd9887f16d913907760c864d32dc5dfa44ffa38803877c3", "09881f6ed93360a2f6ad81f435a8ca51ca4575d0f954f197ff8f7d16c6565562"],
             answer: "a needle",
             hint1: "You'll find me in a sewing kit.",
             hint2: "Thread passes through my \"eye.\"",
@@ -68,7 +68,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t2-01", tier: 2, difficulty: "EASY+",
             clue: "What has a neck but no head, and wears a cap?",
-            answerHashes: ["d054e115f775781691e845b51d64d214060a5af029d9f4e299bdedce31f1ce20"],
+            answerHashes: ["d054e115f775781691e845b51d64d214060a5af029d9f4e299bdedce31f1ce20", "7def9c79e5be6d7a70022168b8b099ce1e707a2fd809a60fab73de6de578884b"],
             answer: "a bottle",
             hint1: "You'll often find me in a fridge.",
             hint2: "You twist my cap to open me.",
@@ -78,7 +78,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t2-02", tier: 2, difficulty: "EASY+",
             clue: "What can travel all the way around the world while staying stuck in one corner?",
-            answerHashes: ["181634c1edc55ce8f84f42d51a0d54f5ad5eab4d85b30dbc6af1f8184772c34e"],
+            answerHashes: ["181634c1edc55ce8f84f42d51a0d54f5ad5eab4d85b30dbc6af1f8184772c34e", "e0afcdbf6ad4adf566c572d7f7c34d4dfb85e5122bba750d6a3a5842f915d39b"],
             answer: "a stamp",
             hint1: "It rides on the outside of an envelope.",
             hint2: "It's licked, stuck to a corner, and then the letter travels for it.",
@@ -88,7 +88,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t2-03", tier: 2, difficulty: "EASY+",
             clue: "The more you take away from me, the bigger I get. What am I?",
-            answerHashes: ["4216a2ed2deead505f7b910b571d87cfbdc286f036fffcdbbb80dd45e0c4c531", "d2d165dff04ba22532c70d8a1ec9fd87e2160e875875de9e830a64e899760d5d"],
+            answerHashes: ["4216a2ed2deead505f7b910b571d87cfbdc286f036fffcdbbb80dd45e0c4c531", "d2d165dff04ba22532c70d8a1ec9fd87e2160e875875de9e830a64e899760d5d", "39ee4551970726c324df4ea3bf0760fe4ff35252340bfba7b1d4564454f9ccce"],
             answer: "a hole",
             hint1: "Think about digging, not spending.",
             hint2: "The more dirt you remove, the deeper and wider it gets.",
@@ -152,7 +152,7 @@ const ENGLISH_RIDDLE_POOL = {
         {
             id: "en-t4-01", tier: 4, difficulty: "MEDIUM+",
             clue: "I speak without a mouth and hear without ears. I have no body, but I come alive with the wind. What am I?",
-            answerHashes: ["73bbe8fe8b2b7b72adc45c0b767e401f5c3072b21bd1da2316e6df93bd207cf7"],
+            answerHashes: ["73bbe8fe8b2b7b72adc45c0b767e401f5c3072b21bd1da2316e6df93bd207cf7", "092c79e8f80e559e404bcf660c48f3522b67aba9ff1484b0367e1a4ddef7431d"],
             answer: "an echo",
             hint1: "You might hear me in a canyon or an empty room.",
             hint2: "I repeat exactly what you say.",
