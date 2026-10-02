@@ -1,14 +1,16 @@
-// Persists today's daily-challenge state so a refresh, a closed tab, or a
-// "Play Again" after a loss never rerolls the day's 10 riddles or loses
-// mid-run progress. Keyed to the current player + today's local date, so a
-// new day (or genuinely different player) starts fresh.
+// Persists today's daily-challenge state so a refresh or a closed tab never
+// rerolls the day's 10 riddles or loses mid-run progress — and so a player
+// gets exactly one attempt per local calendar day. Keyed to the current
+// player + today's local date, so a new day (or genuinely different player)
+// starts fresh.
 
 const DAILY_STATE_KEY = 'clue_daily_state_v1';
 
 // status meanings:
-//   'in_progress' — an attempt is underway; resume it rather than restarting
-//   'ended'       — the last attempt busted or banked early; a new attempt
-//                   may begin, reusing the same day's riddle set
+//   'in_progress' — today's one attempt is underway; resume it in place,
+//                   never restart it, on a refresh or reopened tab
+//   'ended'       — today's attempt busted or was banked early; that was
+//                   the day's one attempt, so no further attempts today
 //   'completed'   — all 10 solved; no further attempts today
 function loadDailyState(playerId, dateKey) {
     let raw;
