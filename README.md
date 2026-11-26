@@ -24,6 +24,7 @@ python3 -m http.server 8000
 - `js/riddle-selector.js` — deterministic, per-player daily riddle selection and recent-riddle avoidance
 - `js/storage.js` — daily-challenge state persistence (so a refresh or restart never rerolls today's riddles)
 - `js/hints.js` — the progressive hint/reveal engine
+- `js/share.js` — the spoiler-free "Share my result" text, share menu and copy fallback
 - `js/daily.js` — local-date tracking and midnight renewal
 - `js/adaptive.js` — performance and integrity tracking (no longer unlocks extra riddles)
 - `js/player.js` — first-visit name collection and backend registration
@@ -44,6 +45,12 @@ python3 -m http.server 8000
 Progress and high scores are stored locally in the browser.
 
 See [`agent.md`](agent.md) for the adaptive agent's complete tracking lifecycle and integrity limitations.
+
+## Sharing results
+
+Once today's attempt is over, players can share a spoiler-free result: 🟩 solved without help, 🟨 solved after a hint or reveal, ⬛ not solved. It includes no riddles, answers or player name. Attempts that were already underway when sharing was released may not show the button.
+
+Run the sharing tests with `node --test tests/share.test.js`.
 
 ## Hints and reveals
 
