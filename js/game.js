@@ -102,6 +102,7 @@ function migrateStaleLocalStorage() {
 function refreshStartButtonForTodayStatus() {
     const startButton = document.getElementById('start-game-button');
     const state = loadDailyState(getSelectionPlayerId(), dailyKey);
+    updateShareButtons(state);
     if (state && state.status === 'completed') {
         startButton.textContent = "TODAY’S CHALLENGE COMPLETE";
         startButton.classList.add('opacity-60', 'cursor-not-allowed');
@@ -614,6 +615,7 @@ function triggerBust(reason) {
     const finalScore = bankedScore + retainedPending;
 
     updateHighScore(finalScore);
+    refreshStartButtonForTodayStatus();
 
     document.getElementById('game-over-icon').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
@@ -635,6 +637,7 @@ function handleRunSuccess() {
     gameActive = false;
     adaptiveAgent.stopSession();
     updateHighScore(bankedScore);
+    refreshStartButtonForTodayStatus();
 
     document.getElementById('game-over-icon').innerHTML = `<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
