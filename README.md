@@ -6,7 +6,7 @@ difficulty from a confident warm-up to a genuine finale.
 
 ## Live game
 
-[Play Clue: One Riddle Away](https://clue-riddle.vercel.app/)
+[Play Clue: One Riddle Away](https://clue.hecodesme.com/)
 
 ## Run locally
 
