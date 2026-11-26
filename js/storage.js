@@ -53,6 +53,7 @@ function createFreshDailyState(playerId, dateKey, riddleIds) {
         lives: 4,
         status: 'in_progress',
         trail: [],
+        solvedIds: [],
         hintStageByRiddle: {},
         revealCountByRiddle: {}
     };

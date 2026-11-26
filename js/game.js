@@ -190,7 +190,25 @@ function startGame() {
 
     persistDailyState();
     loadLevel();
-    showScreen('gameplay-screen');
+
+    // A solved riddle stays current until the player picks save or continue,
+    // so return them to that choice instead of letting them solve it again.
+    if (dailyState.solvedIds?.includes(QUESTIONS[currentLevel].id)) {
+        questionResolved = true;
+        showSolvedChoice();
+    } else {
+        showScreen('gameplay-screen');
+    }
+}
+
+function showSolvedChoice() {
+    document.getElementById('layer-payout-text').textContent = `+${QUESTIONS[currentLevel].points} pts`;
+    document.getElementById('crossroads-pending-text').textContent = `${pendingScore} pts`;
+    document.getElementById('next-level-btn-text').textContent = currentLevel < QUESTIONS.length - 1
+        ? `Try Riddle ${currentLevel + 2}`
+        : "Finish the Game";
+
+    showScreen('crossroads-screen');
 }
 
 function resolveRiddlesFromIds(riddleIds) {
@@ -397,6 +415,10 @@ function handleCorrectAnswer() {
 
     if (dailyState && activeLevelData.theme && !dailyState.trail.includes(activeLevelData.theme)) {
         dailyState.trail.push(activeLevelData.theme);
+    }
+    if (dailyState) {
+        // Attempts saved before this field existed don't have the list yet.
+        (dailyState.solvedIds ||= []).push(activeLevelData.id);
     }
     persistDailyState();
 
